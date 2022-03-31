@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../heat/bmi_heat.h
+bmi.h
+-
+heat.h
+../heat/heat.h
+
+../heat/heat.h
+
+/home/jerom/bmi-example-c/testing/test_get_value.c
+stdio.h
+-
+stdlib.h
+-
+heat.h
+-
+bmi.h
+-
+bmi_heat.h
+-
+

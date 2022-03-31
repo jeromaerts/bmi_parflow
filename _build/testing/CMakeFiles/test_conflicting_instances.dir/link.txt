@@ -1,0 +1,1 @@
+/usr/bin/gcc -ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -O2  -rdynamic CMakeFiles/test_conflicting_instances.dir/test_conflicting_instances.c.o  -o test_conflicting_instances  -Wl,-rpath,/home/jerom/bmi-example-c/_build/heat ../heat/libbmiheatc.so 

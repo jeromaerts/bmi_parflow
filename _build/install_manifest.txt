@@ -1,0 +1,6 @@
+/usr/local/bin/run_heatc
+/usr/local/bin/run_bmiheatc
+/usr/local/lib/libbmiheatc.so
+/usr/local/include/bmi_heat.h
+/usr/local/include/heat.h
+/usr/local/lib/pkgconfig/heatc.pc

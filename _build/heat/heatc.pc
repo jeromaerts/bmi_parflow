@@ -1,0 +1,5 @@
+Name: HeatC
+Description: 2D Heat Equation
+Version: 0.2
+Libs: -L/usr/local/lib -lbmiheatc
+Cflags: -I/usr/local/include

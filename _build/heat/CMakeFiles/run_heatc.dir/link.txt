@@ -1,0 +1,1 @@
+/usr/bin/gcc -ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -O2  -rdynamic CMakeFiles/run_heatc.dir/main.c.o CMakeFiles/run_heatc.dir/heat.c.o  -o run_heatc 

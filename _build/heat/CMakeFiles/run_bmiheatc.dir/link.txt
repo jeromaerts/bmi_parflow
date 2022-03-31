@@ -1,0 +1,1 @@
+/usr/bin/gcc -ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -O2  -rdynamic CMakeFiles/run_bmiheatc.dir/bmi_main.c.o CMakeFiles/run_bmiheatc.dir/bmi_heat.c.o CMakeFiles/run_bmiheatc.dir/heat.c.o  -o run_bmiheatc 

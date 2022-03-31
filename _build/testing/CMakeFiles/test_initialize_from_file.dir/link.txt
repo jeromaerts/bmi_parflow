@@ -1,0 +1,1 @@
+/usr/bin/gcc -ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -O2  -rdynamic CMakeFiles/test_initialize_from_file.dir/test_initialize_from_file.c.o  -o test_initialize_from_file  -Wl,-rpath,/home/jerom/bmi-example-c/_build/heat ../heat/libbmiheatc.so 

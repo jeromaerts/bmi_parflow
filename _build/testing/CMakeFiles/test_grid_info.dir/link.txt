@@ -1,0 +1,1 @@
+/usr/bin/gcc -ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -O2  -rdynamic CMakeFiles/test_grid_info.dir/test_grid_info.c.o  -o test_grid_info  -Wl,-rpath,/home/jerom/bmi-example-c/_build/heat ../heat/libbmiheatc.so 

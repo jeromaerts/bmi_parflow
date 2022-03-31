@@ -1,0 +1,1 @@
+/usr/bin/gcc -fPIC -ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -O2  -shared -Wl,-soname,libbmiheatc.so -o libbmiheatc.so CMakeFiles/bmiheatc.dir/bmi_heat.c.o CMakeFiles/bmiheatc.dir/heat.c.o 

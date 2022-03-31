@@ -1,0 +1,1 @@
+/usr/bin/gcc -ansi -Wall -Wundef -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -O2  -rdynamic CMakeFiles/test_reinitialize.dir/test_reinitialize.c.o  -o test_reinitialize  -Wl,-rpath,/home/jerom/bmi-example-c/_build/heat ../heat/libbmiheatc.so 
