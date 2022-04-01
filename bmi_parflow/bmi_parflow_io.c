@@ -6,15 +6,94 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "amps.h"
+#include "parflow.h"
+#include "solver.h"
+
 #include <bmi.h>
 #include "bmi_parflow.h"
+
 
 #define OK (0)
 #define NOT_OK (1)
 
+amps_ThreadLocalDcl(PFModule *, Solver_module);
+amps_ThreadLocalDcl(PFModule *, solver);
+amps_ThreadLocalDcl(Vector   *, evap_trans);
 
 int initialize_arrays (ParflowBMIModel *self);
 
+
+void wrfparflowinit_(const char *input_file)
+{
+  Grid         *grid;
+  const char *seperators = " \n";
+  /* Fortran char array is not NULL terminated */
+  const char *filename = strtok((char *)input_file, seperators);
+
+  /*-----------------------------------------------------------------------
+  * Initialize AMPS from existing MPI state
+  *-----------------------------------------------------------------------*/
+  if (amps_EmbeddedInit())
+  {
+    amps_Printf("Error: amps_EmbeddedInit initalization failed\n");
+    exit(1);
+  }
+
+  /*-----------------------------------------------------------------------
+  * Set up globals structure
+  *-----------------------------------------------------------------------*/
+  
+  NewGlobals((char *)filename);
+
+  /*-----------------------------------------------------------------------
+  * Read the Users Input Deck
+  *-----------------------------------------------------------------------*/
+  amps_ThreadLocal(input_database) = IDB_NewDB(GlobalsInFileName);
+
+  /*-----------------------------------------------------------------------
+  * Setup log printing
+  *-----------------------------------------------------------------------*/
+  NewLogging();
+
+  /*-----------------------------------------------------------------------
+  * Setup timing table
+  *-----------------------------------------------------------------------*/
+  /* NewTiming(); */
+
+  /* End of main includes */
+
+  /* Begin of Solver includes */
+
+  GlobalsNumProcsX = GetIntDefault("Process.Topology.P", 1);
+  GlobalsNumProcsY = GetIntDefault("Process.Topology.Q", 1);
+  GlobalsNumProcsZ = GetIntDefault("Process.Topology.R", 1);
+
+  GlobalsNumProcs = amps_Size(amps_CommWorld);
+
+  GlobalsBackground = ReadBackground();
+
+  GlobalsUserGrid = ReadUserGrid();
+
+  SetBackgroundBounds(GlobalsBackground, GlobalsUserGrid);
+
+  GlobalsMaxRefLevel = 0;
+
+  amps_ThreadLocal(Solver_module) = PFModuleNewModuleType(SolverImpesNewPublicXtraInvoke, SolverRichards, ("Solver"));
+
+  amps_ThreadLocal(solver) = PFModuleNewInstance(amps_ThreadLocal(Solver_module), ());
+
+  /* End of solver includes */
+
+  SetupRichards(amps_ThreadLocal(solver));
+
+  /* Create the flow grid */
+  grid = CreateGrid(GlobalsUserGrid);
+
+  /* Create the PF vector holding flux */
+  amps_ThreadLocal(evap_trans) = NewVectorType(grid, 1, 1, vector_cell_centered);
+  InitVectorAll(amps_ThreadLocal(evap_trans), 0.0);
+}
 
 void
 parflow_from_input_file (ParflowBMIModel **parflow_bmi_model, const char * filename)
@@ -26,23 +105,9 @@ parflow_from_input_file (ParflowBMIModel **parflow_bmi_model, const char * filen
 
   self = *parflow_bmi_model;
 
-  {
-    FILE *fp = NULL;
-    double alpha = 0.;
-    double t_end = 1.;
-    int n_x = 0;
-    int n_y = 0;
 
-    fp = fopen (filename, "r");
-    fscanf (fp, "%lf, %lf, %d, %d", &alpha, &t_end, &n_x, &n_y);
-
-    self->dt = 1. / (4. * alpha);
-    self->alpha = alpha;
-    self->t_end = t_end;
-    self->shape[0] = n_y;
-    self->shape[1] = n_x;
-  }
-
+  wrfparflowinit_(filename);
+  
   self->spacing[0] = 1.;
   self->spacing[1] = 1.;
 

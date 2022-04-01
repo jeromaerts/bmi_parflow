@@ -62,4 +62,5 @@ parflow_solve_2d (double ** z, int shape[2], double spacing[2], double alpha,
       for (j=1; j<top_col; j++)
         out[i][j] += z[i][j];
   }
+  return OK;
 }
